@@ -1,5 +1,6 @@
 import Button from "./Ui/Button";
-
+import slicer from "../utils/slicer";
+import { useState } from "react";
 interface Iprops {
   product: {
     title: string;
@@ -12,6 +13,7 @@ interface Iprops {
 }
 export default function ProductCard({ product }: Iprops) {
   let { title, price, description, image, colors, category } = product;
+  let [isSlice, setIsSlice] = useState(false);
   return (
     <div className="w-80 bg-amber-50 rounded-2xl shadow-lg overflow-hidden p-5 flex flex-col gap-4 border border-amber-200">
       <img
@@ -21,8 +23,13 @@ export default function ProductCard({ product }: Iprops) {
       />
 
       <h3 className="text-xl font-semibold text-amber-900">{title}</h3>
-      <p className="text-base text-amber-700/90 leading-relaxed">
-        {description}
+      <p
+        onClick={() => {
+          setIsSlice(!isSlice);
+        }}
+        className="text-base text-amber-700/90 leading-relaxed"
+      >
+        {slicer(description, isSlice)}
       </p>
 
       {/* Colors */}
