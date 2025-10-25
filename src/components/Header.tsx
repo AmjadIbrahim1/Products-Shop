@@ -1,3 +1,4 @@
+import Button from "./Ui/Button";
 
 export default function Header() {
   return (
@@ -7,10 +8,10 @@ export default function Header() {
           Products-Shop
         </h1>
 
-        <button className="cursor-pointer flex items-center gap-2 px-5 py-2.5 rounded-lg bg-amber-600 text-white font-semibold shadow hover:shadow-lg hover:bg-amber-700 active:scale-95 transition-all">
+        <Button design="bg-amber-600 hover:bg-amber-700 flex items-center gap-2 px-5 font-semibold shadow active:scale-95">
           <span className="text-lg">+</span>
           New Product
-        </button>
+        </Button>
       </div>
     </header>
   );

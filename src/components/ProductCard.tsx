@@ -1,3 +1,5 @@
+import Button from "./Ui/Button";
+
 interface Iprops {
   product: {
     title: string;
@@ -50,12 +52,17 @@ export default function ProductCard({ product }: Iprops) {
       </div>
 
       <div className="flex gap-3 mt-4">
-        <button className="cursor-pointer flex-1 px-4 py-2.5 text-base rounded-lg bg-amber-500 text-white hover:bg-amber-600 transition">
+        <Button
+          doEvent={() => {
+            alert("Hello world");
+          }}
+          design="bg-amber-500 hover:bg-amber-600 flex-1 px-4"
+        >
           Edit
-        </button>
-        <button className="cursor-pointer flex-1 px-4 py-2.5 text-base rounded-lg bg-amber-700 text-white hover:bg-amber-800 transition">
+        </Button>
+        <Button design="bg-amber-700 hover:bg-amber-800 flex-1 px-4">
           Remove
-        </button>
+        </Button>
       </div>
     </div>
   );
