@@ -6,12 +6,7 @@ function App() {
   let productListMarkup = Products.map((product) => (
     <ProductCard
       key={product.id}
-      title={product.title}
-      price={product.price}
-      description={product.description}
-      image={product.image}
-      colors={product.colors}
-      category={product.category}
+      product = {product}
     />
   ));
   return (

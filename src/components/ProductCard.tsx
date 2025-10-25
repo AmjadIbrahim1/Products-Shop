@@ -1,19 +1,15 @@
 interface Iprops {
-  title: string;
-  price: string;
-  description: string;
-  image: string;
-  colors: string[];
-  category: string;
+  product: {
+    title: string;
+    price: string;
+    description: string;
+    image: string;
+    colors: string[];
+    category: string;
+  };
 }
-export default function ProductCard({
-  title,
-  price,
-  description,
-  image,
-  colors,
-  category,
-}: Iprops) {
+export default function ProductCard({ product }: Iprops) {
+  let { title, price, description, image, colors, category } = product;
   return (
     <div className="w-80 bg-amber-50 rounded-2xl shadow-lg overflow-hidden p-5 flex flex-col gap-4 border border-amber-200">
       <img
