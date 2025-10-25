@@ -1,6 +1,8 @@
 import Button from "./Ui/Button";
 import slicer from "../utils/slicer";
 import { useState } from "react";
+import { useContext } from "react";
+import { showFormInputContext } from "../contexts/FormContext";
 interface Iprops {
   product: {
     title: string;
@@ -12,6 +14,10 @@ interface Iprops {
   };
 }
 export default function ProductCard({ product }: Iprops) {
+  let { showFormInput, setShowFormInput } = useContext(showFormInputContext);
+  function handleClick() {
+    setShowFormInput(true);
+  }
   let { title, price, description, image, colors, category } = product;
   let [isSlice, setIsSlice] = useState(false);
   return (
@@ -61,7 +67,7 @@ export default function ProductCard({ product }: Iprops) {
       <div className="flex gap-3 mt-4">
         <Button
           doEvent={() => {
-            alert("Hello world");
+            handleClick();
           }}
           design="bg-amber-500 hover:bg-amber-600 flex-1 px-4"
         >
