@@ -3,19 +3,21 @@ import slicer from "../utils/slicer";
 import { useState } from "react";
 import { useContext } from "react";
 import { showFormInputContext } from "../contexts/FormContext";
+import type { ProductType } from "../types/ProductType";
+
 interface Iprops {
-  product: {
-    title: string;
-    price: string;
-    description: string;
-    image: string;
-    colors: string[];
-    category: string;
-  };
+  product: ProductType;
 }
 export default function ProductCard({ product }: Iprops) {
-  let { showFormInput, setShowFormInput } = useContext(showFormInputContext);
+  const { setShowFormInput, setIsEdit, setEditProductId } =
+    useContext(showFormInputContext);
   function handleClick() {
+    setShowFormInput(true);
+  }
+
+  function handleEdit() {
+    setIsEdit(true);
+    setEditProductId(product.id);
     setShowFormInput(true);
   }
   let { title, price, description, image, colors, category } = product;
@@ -68,6 +70,7 @@ export default function ProductCard({ product }: Iprops) {
         <Button
           doEvent={() => {
             handleClick();
+            handleEdit();
           }}
           design="bg-amber-500 hover:bg-amber-600 flex-1 px-4"
         >
