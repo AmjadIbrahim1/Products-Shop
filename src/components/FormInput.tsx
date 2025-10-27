@@ -1,8 +1,16 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { showFormInputContext } from "../contexts/FormContext";
+import isValid from "../utils/validation";
 
 export default function FormInput() {
+  const [check, setCheck] = useState({
+    title: "",
+    description: "",
+    image: "",
+    price: "",
+  });
+
   let {
     showFormInput,
     setShowFormInput,
@@ -36,6 +44,7 @@ export default function FormInput() {
       descriptionRef.current!.value = "";
       imageRef.current!.value = "";
       priceRef.current!.value = "";
+      setCheck({ title: "", description: "", image: "", price: "" });
     }
   }, [isEdit, editProductId]);
 
@@ -54,6 +63,11 @@ export default function FormInput() {
       image: imageRef.current!.value,
       price: priceRef.current!.value,
     };
+
+    const validationResult = isValid(formValues);
+    setCheck(validationResult.errors);
+
+    if (!validationResult.ok) return;
 
     if (isEdit && editProductId) {
       setProducts(
@@ -78,14 +92,10 @@ export default function FormInput() {
 
   return (
     <Dialog open={showFormInput} onClose={close} className="relative z-50">
-      {/* خلفية */}
       <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" />
 
       <div className="fixed inset-0 flex items-center justify-center px-4 py-6 overflow-y-auto">
-        <DialogPanel
-          className="w-full max-w-lg rounded-xl bg-white p-6 shadow-2xl border border-amber-200
-          duration-200 ease-out data-[closed]:scale-95 data-[closed]:opacity-0"
-        >
+        <DialogPanel className="w-full max-w-lg rounded-xl bg-white p-6 shadow-xl border border-amber-200">
           <DialogTitle className="text-2xl font-bold text-amber-900 mb-4">
             {isEdit ? "Edit Product" : "Add New Product"}
           </DialogTitle>
@@ -93,34 +103,55 @@ export default function FormInput() {
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             {/* Title */}
             <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-amber-800">
-                Product Title
+              <label className="text-sm font-medium text-amber-900">
+                Title
               </label>
-              <input ref={titleRef} className={inputStyle} />
+              <input
+                ref={titleRef}
+                className={inputStyle}
+                placeholder="Enter product title"
+              />
+              <p className="text-red-600 text-sm">{check.title}</p>
             </div>
 
             {/* Description */}
             <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-amber-800">
+              <label className="text-sm font-medium text-amber-900">
                 Description
               </label>
-              <input ref={descriptionRef} className={inputStyle} />
+              <input
+                ref={descriptionRef}
+                className={inputStyle}
+                placeholder="Enter product description"
+              />
+              <p className="text-red-600 text-sm">{check.description}</p>
             </div>
 
-            {/* Image URL */}
+            {/* Image */}
             <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-amber-800">
+              <label className="text-sm font-medium text-amber-900">
                 Image URL
               </label>
-              <input ref={imageRef} className={inputStyle} />
+              <input
+                ref={imageRef}
+                className={inputStyle}
+                placeholder="https://example.com/image.jpg"
+              />
+              <p className="text-red-600 text-sm">{check.image}</p>
             </div>
 
             {/* Price */}
             <div className="flex flex-col gap-1">
-              <label className="text-sm font-medium text-amber-800">
+              <label className="text-sm font-medium text-amber-900">
                 Price
               </label>
-              <input ref={priceRef} type="number" className={inputStyle} />
+              <input
+                ref={priceRef}
+                type="number"
+                className={inputStyle}
+                placeholder="Enter product price"
+              />
+              <p className="text-red-600 text-sm">{check.price}</p>
             </div>
 
             {/* Buttons */}
