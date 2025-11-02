@@ -9,6 +9,7 @@ export default function Button({ design, children, doEvent }: Iprops) {
   return (
     <button className={`${commonDesign} ${design}`} onClick={doEvent}>
       {children}
+      
     </button>
   );
 }
