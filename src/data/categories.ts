@@ -1,0 +1,23 @@
+export const categories: string[] = [
+  "Electronics",
+  "Fashion",
+  "Home",
+  "Beauty",
+  "Sports",
+  "Books",
+  "Toys",
+  "Gaming",
+  "Groceries",
+  "Accessories",
+  "Mobile Phones",
+  "Computers",
+  "Furniture",
+  "Kitchen",
+  "Health",
+  "Shoes",
+  "Bags",
+  "Watches",
+  "Perfumes",
+  "Smart Devices",
+] as const ;
+export type CategoryType = (typeof categories)[number];
