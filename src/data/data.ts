@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-export let products = [
+export const products = [
     {
       id: uuidv4(),
       title: "Product 1",

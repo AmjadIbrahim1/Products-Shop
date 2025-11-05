@@ -10,10 +10,10 @@ interface Iprops {
 }
 
 export default function ProductCard({ product }: Iprops) {
-  let [isSlice, setIsSlice] = useState(false);
-  let [showRemove, setShowRemove] = useState(false); // ✅ New state
+  const [isSlice, setIsSlice] = useState(false);
+  const [showRemove, setShowRemove] = useState(false); 
 
-  let { id, title, price, description, image, colors, category } = product;
+  const { id, title, price, description, image, colors, category } = product;
 
   const { setShowFormInput, setIsEdit, setEditProductId } =
     useContext(showFormInputContext);

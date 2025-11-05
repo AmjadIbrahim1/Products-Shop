@@ -6,10 +6,10 @@ interface Product {
 }
 
 export default function isValid({ title, description, image, price }: Product) {
-  let errors = { title: "", description: "", image: "", price: "" };
+  const errors = { title: "", description: "", image: "", price: "" };
   let ok = true;
 
-  if (title.length < 10 || title.length > 80) {
+  if (title.length < 5 || title.length > 80) {
     errors.title = "Title must be between 10 and 80 characters.";
     ok = false;
   }

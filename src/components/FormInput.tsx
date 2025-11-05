@@ -2,6 +2,7 @@ import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { useContext, useEffect, useRef, useState } from "react";
 import { showFormInputContext } from "../contexts/FormContext";
 import isValid from "../utils/validation";
+import { categories } from "../data/categories";
 
 export default function FormInput() {
   const [check, setCheck] = useState({
@@ -11,7 +12,10 @@ export default function FormInput() {
     price: "",
   });
 
-  let {
+  const [category, setCategory] = useState("general");
+  const [open, setOpen] = useState(false);
+
+  const {
     showFormInput,
     setShowFormInput,
     Products,
@@ -22,10 +26,10 @@ export default function FormInput() {
     setEditProductId,
   } = useContext(showFormInputContext);
 
-  let titleRef = useRef<HTMLInputElement>(null);
-  let descriptionRef = useRef<HTMLInputElement>(null);
-  let imageRef = useRef<HTMLInputElement>(null);
-  let priceRef = useRef<HTMLInputElement>(null);
+  const titleRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLInputElement>(null);
+  const imageRef = useRef<HTMLInputElement>(null);
+  const priceRef = useRef<HTMLInputElement>(null);
 
   const inputStyle =
     "border border-amber-300 rounded-lg p-2 focus:ring-2 focus:ring-amber-400 outline-none w-full placeholder:text-amber-400/60";
@@ -38,12 +42,14 @@ export default function FormInput() {
         descriptionRef.current!.value = productToEdit.description;
         imageRef.current!.value = productToEdit.image;
         priceRef.current!.value = productToEdit.price;
+        setCategory(productToEdit.category || "general");
       }
     } else {
       titleRef.current!.value = "";
       descriptionRef.current!.value = "";
       imageRef.current!.value = "";
       priceRef.current!.value = "";
+      setCategory("general");
       setCheck({ title: "", description: "", image: "", price: "" });
     }
   }, [isEdit, editProductId]);
@@ -62,6 +68,7 @@ export default function FormInput() {
       description: descriptionRef.current!.value,
       image: imageRef.current!.value,
       price: priceRef.current!.value,
+      category,
     };
 
     const validationResult = isValid(formValues);
@@ -82,7 +89,6 @@ export default function FormInput() {
           id: crypto.randomUUID(),
           ...formValues,
           colors: [],
-          category: "general",
         },
       ]);
     }
@@ -101,7 +107,6 @@ export default function FormInput() {
           </DialogTitle>
 
           <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-            {/* Title */}
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium text-amber-900">
                 Title
@@ -114,7 +119,6 @@ export default function FormInput() {
               <p className="text-red-600 text-sm">{check.title}</p>
             </div>
 
-            {/* Description */}
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium text-amber-900">
                 Description
@@ -127,7 +131,6 @@ export default function FormInput() {
               <p className="text-red-600 text-sm">{check.description}</p>
             </div>
 
-            {/* Image */}
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium text-amber-900">
                 Image URL
@@ -140,7 +143,6 @@ export default function FormInput() {
               <p className="text-red-600 text-sm">{check.image}</p>
             </div>
 
-            {/* Price */}
             <div className="flex flex-col gap-1">
               <label className="text-sm font-medium text-amber-900">
                 Price
@@ -154,7 +156,43 @@ export default function FormInput() {
               <p className="text-red-600 text-sm">{check.price}</p>
             </div>
 
-            {/* Buttons */}
+            <div className="flex flex-col gap-1 relative">
+              <label className="text-sm font-medium text-amber-900">
+                Category
+              </label>
+
+              <div
+                onClick={() => setOpen((prev) => !prev)}
+                className="border border-amber-300 rounded-lg p-2 w-full bg-white text-amber-800 cursor-pointer flex justify-between items-center hover:border-amber-400 transition"
+              >
+                <span>{category}</span>
+                <span
+                  className={`text-amber-600 transition-transform duration-200 ${
+                    open ? "rotate-180" : ""
+                  }`}
+                >
+                  ▼
+                </span>
+              </div>
+
+              {open && (
+                <div className="absolute z-20 top-full left-0 right-0 mt-1 bg-white border border-amber-200 rounded-lg shadow-md animate-[fadeSlide_0.18s_ease-out]">
+                  {categories.map((c) => (
+                    <p
+                      key={c}
+                      onClick={() => {
+                        setCategory(c);
+                        setOpen(false);
+                      }}
+                      className="p-2 text-amber-800 cursor-pointer hover:bg-amber-100 transition"
+                    >
+                      {c}
+                    </p>
+                  ))}
+                </div>
+              )}
+            </div>
+
             <div className="flex justify-end gap-3 mt-3">
               <button
                 type="button"

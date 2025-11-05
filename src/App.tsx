@@ -4,12 +4,11 @@ import { products } from "./data/data";
 import Header from "./components/Header";
 import FormInput from "./components/FormInput";
 import { showFormInputContext } from "./contexts/FormContext";
-import RemovePopup from "./components/RemovePopup";
 function App() {
-  let [Products, setProducts] = useState(products);
-  let [showFormInput, setShowFormInput] = useState(false);
-  let [isEdit, setIsEdit] = useState(false);
-  let [editProductId, setEditProductId] = useState<string | null>(null);
+  const [Products, setProducts] = useState(products);
+  const [showFormInput, setShowFormInput] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [editProductId, setEditProductId] = useState<string | null>(null);
 
   return (
     <showFormInputContext.Provider

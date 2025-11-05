@@ -2,8 +2,8 @@ import Button from "./Ui/Button";
 import { useContext } from "react";
 import { showFormInputContext } from "../contexts/FormContext";
 export default function Header() {
-  let { showFormInput, setShowFormInput } = useContext(showFormInputContext);
-  let handleClick = () => {
+  const { showFormInput, setShowFormInput } = useContext(showFormInputContext);
+  const handleClick = () => {
     setShowFormInput(true);
     console.log(showFormInput)
   };
