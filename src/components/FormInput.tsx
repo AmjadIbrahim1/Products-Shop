@@ -1,8 +1,12 @@
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { showFormInputContext } from "../contexts/FormContext";
 import isValid from "../utils/validation";
+import type { ProductFormValues } from "../utils/validation";
+
 import { categories } from "../data/categories";
+import ColorsSelect from "./Ui/ColorsSelect";
+import type { ProductType } from "../types/ProductType";
 
 export default function FormInput() {
   const [check, setCheck] = useState({
@@ -12,8 +16,9 @@ export default function FormInput() {
     price: "",
   });
 
-  const [category, setCategory] = useState("general");
-  const [open, setOpen] = useState(false);
+  const [category, setCategory] = useState<string>("General");
+  const [open, setOpen] = useState(false); 
+  const [selectedColors, setSelectedColors] = useState<string[]>([]);
 
   const {
     showFormInput,
@@ -42,17 +47,20 @@ export default function FormInput() {
         descriptionRef.current!.value = productToEdit.description;
         imageRef.current!.value = productToEdit.image;
         priceRef.current!.value = productToEdit.price;
-        setCategory(productToEdit.category || "general");
+        setCategory(productToEdit.category ?? "General");
+        setSelectedColors(productToEdit.colors ?? []);
       }
     } else {
-      titleRef.current!.value = "";
-      descriptionRef.current!.value = "";
-      imageRef.current!.value = "";
-      priceRef.current!.value = "";
-      setCategory("general");
+      if (titleRef.current) titleRef.current.value = "";
+      if (descriptionRef.current) descriptionRef.current.value = "";
+      if (imageRef.current) imageRef.current.value = "";
+      if (priceRef.current) priceRef.current.value = "";
+
+      setCategory("General");
+      setSelectedColors([]);
       setCheck({ title: "", description: "", image: "", price: "" });
     }
-  }, [isEdit, editProductId]);
+  }, [isEdit, editProductId, Products]);
 
   function close() {
     setShowFormInput(false);
@@ -63,34 +71,36 @@ export default function FormInput() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    const formValues = {
-      title: titleRef.current!.value,
-      description: descriptionRef.current!.value,
-      image: imageRef.current!.value,
-      price: priceRef.current!.value,
+    const formValues: ProductFormValues = {
+      title: titleRef.current!.value.trim(),
+      description: descriptionRef.current!.value.trim(),
+      image: imageRef.current!.value.trim(),
+      price: priceRef.current!.value.trim(),
+      colors: selectedColors,
       category,
     };
 
     const validationResult = isValid(formValues);
     setCheck(validationResult.errors);
-
     if (!validationResult.ok) return;
 
     if (isEdit && editProductId) {
       setProducts(
         Products.map((p) =>
-          p.id === editProductId ? { ...p, ...formValues } : p
+          p.id === editProductId ? ({ ...p, ...formValues } as ProductType) : p
         )
       );
     } else {
-      setProducts([
-        ...Products,
-        {
-          id: crypto.randomUUID(),
-          ...formValues,
-          colors: [],
-        },
-      ]);
+      const newProduct: ProductType = {
+        id: crypto.randomUUID(),
+        title: formValues.title,
+        description: formValues.description,
+        image: formValues.image,
+        price: formValues.price,
+        colors: formValues.colors ?? [],
+        category: formValues.category ?? "General",
+      };
+      setProducts([...Products, newProduct]);
     }
 
     close();
@@ -160,9 +170,8 @@ export default function FormInput() {
               <label className="text-sm font-medium text-amber-900">
                 Category
               </label>
-
               <div
-                onClick={() => setOpen((prev) => !prev)}
+                onClick={() => setOpen((s) => !s)}
                 className="border border-amber-300 rounded-lg p-2 w-full bg-white text-amber-800 cursor-pointer flex justify-between items-center hover:border-amber-400 transition"
               >
                 <span>{category}</span>
@@ -192,6 +201,11 @@ export default function FormInput() {
                 </div>
               )}
             </div>
+
+            <ColorsSelect
+              selectedColors={selectedColors}
+              setSelectedColors={setSelectedColors}
+            />
 
             <div className="flex justify-end gap-3 mt-3">
               <button

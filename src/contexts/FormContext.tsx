@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import type { ProductType } from "../types/ProductType";
 
-interface FormContextType {
+export interface FormContextType {
   showFormInput: boolean;
   setShowFormInput: React.Dispatch<React.SetStateAction<boolean>>;
   Products: ProductType[];

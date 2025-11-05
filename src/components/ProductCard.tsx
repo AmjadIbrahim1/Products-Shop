@@ -30,7 +30,6 @@ export default function ProductCard({ product }: Iprops) {
 
   return (
     <>
-      {/* ✅ Popup displayed conditionally */}
       {showRemove && (
         <RemovePopup Pid={id} open={true} setShowRemove={setShowRemove} />
       )}
@@ -51,7 +50,6 @@ export default function ProductCard({ product }: Iprops) {
           {slicer(description, isSlice)}
         </p>
 
-        {/* Colors */}
         <div className="flex items-center gap-3">
           <span className="text-base font-medium text-amber-800">Colors:</span>
 
@@ -79,7 +77,6 @@ export default function ProductCard({ product }: Iprops) {
           </div>
         </div>
 
-        {/* Buttons */}
         <div className="flex gap-3 mt-4">
           <Button
             doEvent={handleEdit}
